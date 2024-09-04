@@ -1,0 +1,48 @@
+project schema 
+CREATE TABLE projects (
+  id SERIAL PRIMARY KEY,
+  project_id VARCHAR(255) UNIQUE NOT NULL,
+  name VARCHAR(255),
+  description TEXT,
+  created_by VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  total_fund INTEGER DEFAULT 0,
+  status VARCHAR(50),
+  project_logo_image BYTEA, 
+  project_logo_name  VARCHAR(120),
+  project_banner_image BYTEA,  
+  website_url VARCHAR(255)  
+);
+
+--project funding schema
+CREATE TABLE funding (
+  id SERIAL PRIMARY KEY,
+  project_id INTEGER NOT NULL REFERENCES project(id),
+  amount INTEGER NOT NULL,
+  funding_source VARCHAR(255),
+  funding_description VARCHAR(250),
+  currency VARCHAR(50)  
+  timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+);
+
+-- project_contribution schema 
+CREATE TABLE project_contribution {
+  id SERIAL PRIMARY KEY,
+  project_id INTEGER NOT NULL REFERENCES project(id),
+  contribution TEXT NOT NULL,
+  dependecy_website_url VARCHAR(255),
+  dependency_description VARCHAR(120),
+};
+
+-- project project_impact schema
+CREATE TABLE project_impact {
+  description TEXT,
+};
+
+-- project comment schema
+CREATE TABLE comments (
+  project_id INTEGER NOT NULL REFERENCES projects(id),
+  user_id VARCHAR(250) NOT NULL,
+  comment_text TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
