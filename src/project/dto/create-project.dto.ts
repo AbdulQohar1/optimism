@@ -1,31 +1,49 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaClient, project } from "@prisma/client";
-
-@Injectable() 
-
 export class CreateProjectDto {
-	constructor (private readonly prisma: PrismaClient) {}
+  id: number;
+  project_id: string;
+  name: string | null;
+  description: string | null;
+  created_by: string;
+  created_at: Date;
+  total_fund: number | null;
+  status: string | null;
+  project_logo_image: Buffer | null;
+  project_logo_name: string | null;
+  project_banner_image: Buffer | null;
+  website_url: string | null;
+};
 
-	async createProject( data: {
-		id: number;
-    project_id: string;
-    name: string | null;
-    description: string | null;
-    created_by: string;
-    created_at: Date;
-    total_fund: number | null;
-    status: string | null;
-    project_logo_image: Buffer | null;
-    project_logo_name: string | null;
-    project_banner_image: Buffer | null;
-    website_url: string | null;
-	}): Promise< project> {
-		const project = await this.prisma.project.create({
-			data,
-		});
-		return project
-	};
-}
+
+
+
+// import { Injectable } from "@nestjs/common";
+// import { PrismaClient, project } from "@prisma/client";
+
+// @Injectable() 
+
+// export class CreateProjectDto {
+// 	constructor (private readonly prisma: PrismaClient) {}
+
+// 	async createProject( data: {
+// 		id: number;
+//     project_id: string;
+//     name: string | null;
+//     description: string | null;
+//     created_by: string;
+//     created_at: Date;
+//     total_fund: number | null;
+//     status: string | null;
+//     project_logo_image: Buffer | null;
+//     project_logo_name: string | null;
+//     project_banner_image: Buffer | null;
+//     website_url: string | null;
+// 	}): Promise< project> {
+// 		const project = await this.prisma.project.create({
+// 			data,
+// 		});
+// 		return project
+// 	};
+// }
 
 
 // description TEXT,

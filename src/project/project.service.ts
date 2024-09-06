@@ -1,21 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { PrismaClient} from '@prisma/client';
+import { PrismaClient, project} from '@prisma/client';
 
 @Injectable()
 export class ProjectService {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async createProject (createProjectDto: projectCreateInput): Promise<  PublicProject> {
-    const project = await this.prisma.project.create({
-      data: createProjectDto,
-    });
-    return project;
+  async createProject(createProjectDto: CreateProjectDto): Promise <project> {
+
+    const Project = await this.prisma.project.create(
+      {
+        data: {
+          ...createProjectDto,
+        },
+      }
+    )
+    
+    return Project;
   }
-  // create(createProjectDto: CreateProjectDto) {
-  //   return 'This action adds a new project';
-  // }
 
   // findAll() {
   //   return `This action returns all project`;
