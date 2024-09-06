@@ -15,29 +15,39 @@ CREATE TABLE projects (
 );
 
 --project funding schema
+
 CREATE TABLE funding (
   id SERIAL PRIMARY KEY,
   project_id INTEGER NOT NULL REFERENCES project(id),
   amount INTEGER NOT NULL,
   funding_source VARCHAR(255),
   funding_description VARCHAR(250),
-  currency VARCHAR(50)  
-  timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  currency VARCHAR(50),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
+
+CREATE TABLE funding (
+  id SERIAL PRIMARY KEY,
+  project_id INTEGER NOT NULL REFERENCES project(id),
+  amount INTEGER NOT NULL,
+  funding_source VARCHAR(255),
+  funding_description VARCHAR(250),
+  currency VARCHAR(50),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- project_contribution schema 
-CREATE TABLE project_contribution {
+CREATE TABLE project_contribution (
   id SERIAL PRIMARY KEY,
   project_id INTEGER NOT NULL REFERENCES project(id),
   contribution TEXT NOT NULL,
   dependecy_website_url VARCHAR(255),
-  dependency_description VARCHAR(120),
-};
+  dependency_description VARCHAR(120));
 
 -- project project_impact schema
-CREATE TABLE project_impact {
-  description TEXT,
-};
+CREATE TABLE project_impact (
+  id SERIAL PRIMARY KEY,
+  project_id INTEGER NOT NULL REFERENCES project(id),
+  description TEXT);
 
 -- project comment schema
 CREATE TABLE comments (
@@ -46,3 +56,14 @@ CREATE TABLE comments (
   comment_text TEXT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model project_impact {
+  description String?
+  id          Int     @id @default(autoincrement())
+  project_id  Int
+  project     project @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@ignore
+}
