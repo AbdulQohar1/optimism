@@ -31,9 +31,9 @@ model project {
   project_logo_name    String?                @db.VarChar(120)
   project_banner_image Bytes?
   website_url          String?                @db.VarChar(255)
-  projectFunding       projectFunding[]
-  project_contribution project_contribution[]
-  project_impact       project_impact[]
+  projectFunding       projectFunding[]       @relation(name: "Project_has_ProjectFunding", onDelete: Cascade, onUpdate: Cascade)
+  project_contribution project_contribution[] @relation(name: "Project_has_ProjectContribution", onDelete: Cascade, onUpdate: Cascade)
+  project_impact       project_impact[]       @relation(name: "Project_has_ProjectImpact", onDelete: Cascade, onUpdate: Cascade)
 }
 
 model project_contribution {

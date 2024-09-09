@@ -32,23 +32,23 @@ export class ProjectFundingController {
     return projectFunding;
 }
 
-  @Get()
-  findAll() {
-    return this.projectFundingService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.projectFundingService.findAll();
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.projectFundingService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.projectFundingService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectFundingDto: UpdateProjectFundingDto) {
-    return this.projectFundingService.update(+id, updateProjectFundingDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateProjectFundingDto: UpdateProjectFundingDto) {
+  //   return this.projectFundingService.update(+id, updateProjectFundingDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectFundingService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.projectFundingService.remove(+id);
+  // }
 }
