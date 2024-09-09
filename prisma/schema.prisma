@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model funding {
+model projectFunding {
   id                  Int      @id @default(autoincrement())
   project_id          Int
   amount              Int
@@ -31,7 +31,7 @@ model project {
   project_logo_name    String?                @db.VarChar(120)
   project_banner_image Bytes?
   website_url          String?                @db.VarChar(255)
-  funding              funding[]
+  projectFunding       projectFunding[]
   project_contribution project_contribution[]
   project_impact       project_impact[]
 }

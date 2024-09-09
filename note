@@ -1,4 +1,4 @@
-project schema 
+--project schema 
 CREATE TABLE projects (
   id SERIAL PRIMARY KEY,
   project_id VARCHAR(255) UNIQUE NOT NULL,
@@ -23,17 +23,18 @@ CREATE TABLE funding (
   funding_source VARCHAR(255),
   funding_description VARCHAR(250),
   currency VARCHAR(50),
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
-
-CREATE TABLE funding (
-  id SERIAL PRIMARY KEY,
-  project_id INTEGER NOT NULL REFERENCES project(id),
-  amount INTEGER NOT NULL,
-  funding_source VARCHAR(255),
-  funding_description VARCHAR(250),
-  currency VARCHAR(50),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- CREATE TABLE funding (
+--   id SERIAL PRIMARY KEY,
+--   project_id INTEGER NOT NULL REFERENCES project(id),
+--   amount INTEGER NOT NULL,
+--   funding_source VARCHAR(255),
+--   funding_description VARCHAR(250),
+--   currency VARCHAR(50),
+--   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- );
 
 -- project_contribution schema 
 CREATE TABLE project_contribution (
