@@ -3,12 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ProjectModule } from './project/project.module';
-import { ProjectFundingModule } from './project-funding/project-funding.module';
+import { FundingModule } from './funding/funding.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
-  }), ProjectModule, ProjectFundingModule],
+  }), ProjectModule,  FundingModule],
   controllers: [AppController],
   providers: [AppService],
 })

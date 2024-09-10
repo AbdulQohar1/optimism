@@ -1,3 +1,18 @@
+ALTER TABLE funding 
+ADD CONSTRAINT fk_funding_projects 
+FOREIGN KEY (project_id) 
+REFERENCES projects(id);
+
+ALTER TABLE project_contribution 
+ADD CONSTRAINT fk_project_contribution_projects 
+FOREIGN KEY (project_id) 
+REFERENCES projects(id);
+
+ALTER TABLE project_impact 
+ADD CONSTRAINT fk_project_impact_projects 
+FOREIGN KEY (project_id) 
+REFERENCES projects(id);
+
 --project schema 
 CREATE TABLE projects (
   id SERIAL PRIMARY KEY,
@@ -15,26 +30,15 @@ CREATE TABLE projects (
 );
 
 --project funding schema
-
 CREATE TABLE funding (
   id SERIAL PRIMARY KEY,
-  project_id INTEGER NOT NULL REFERENCES project(id),
+  project_id INTE1GER NOT NULL REFERENCES project(id),
   amount INTEGER NOT NULL,
   funding_source VARCHAR(255),
   funding_description VARCHAR(250),
   currency VARCHAR(50),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
--- CREATE TABLE funding (
---   id SERIAL PRIMARY KEY,
---   project_id INTEGER NOT NULL REFERENCES project(id),
---   amount INTEGER NOT NULL,
---   funding_source VARCHAR(255),
---   funding_description VARCHAR(250),
---   currency VARCHAR(50),
---   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
--- );
 
 -- project_contribution schema 
 CREATE TABLE project_contribution (
@@ -59,12 +63,47 @@ CREATE TABLE comments (
 );
 
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model project_impact {
-  description String?
-  id          Int     @id @default(autoincrement())
-  project_id  Int
-  project     project @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+model funding {
+  id                  Int      @id @default(autoincrement())
+  project_id          Int
+  amount              Int
+  funding_source      String?  @db.VarChar(255)
+  funding_description String?  @db.VarChar(250)
+  currency            String?  @db.VarChar(50)
+  created_at          DateTime @default(now()) @db.Timestamp(6)
+  project             project  @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
 
-  @@ignore
+model project {
+  id                   Int                    @id(map: "projects_pkey") @default(autoincrement())
+  project_id           String                 @unique(map: "projects_project_id_key") @db.VarChar(255)
+  name                 String?                @db.VarChar(255)
+  description          String?
+  created_by           String                 @db.VarChar(255)
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  total_fund           Int?                   @default(0)
+  status               String?                @db.VarChar(50)
+  project_logo_image   Bytes?
+  project_logo_name    String?                @db.VarChar(120)
+  project_banner_image Bytes?
+  website_url          String?                @db.VarChar(255)
+  projectFunding       projectFunding[]       @relation(name: "Project_has_ProjectFunding", onDelete: Cascade, onUpdate: Cascade)
+  project_contribution project_contribution[] @relation(name: "Project_has_ProjectContribution", onDelete: Cascade, onUpdate: Cascade)
+  project_impact       project_impact[]       @relation(name: "Project_has_ProjectImpact", onDelete: Cascade, onUpdate: Cascade)
+}
+
+model project_contribution {
+  id                     Int     @id @default(autoincrement())
+  project_id             Int
+  contribution           String
+  dependecy_website_url  String? @db.VarChar(255)
+  dependency_description String? @db.VarChar(120)
+  project                project @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model project_impact {
+  id                     Int     @id @default(autoincrement())
+  project_id             Int
+  description            String?
+  project                project @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
