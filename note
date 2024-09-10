@@ -82,6 +82,32 @@ async update(id: number, updateFundingDto: UpdateFundingDto): Promise<funding> {
     data: updatedData,
   });
 
-  // return `This action updates a #${id} funding`;
+  /`/ return `This action updates a #${id} funding`;
   return updateFunding;
+  }
+
 }
+
+async update(id: number, updateFundingDto: UpdateFundingDto): Promise<funding> {
+    const existingFunding = await this.findOne(id);
+
+    if (!existingFunding) {
+      throw new NotFoundException(`Fund with the provided id ${id} not found...`);
+    }
+
+    const updatedData: UpdateFundingDto = {
+      project_id: updateFundingDto.project_id,
+      amount: updateFundingDto.amount,
+      funding_source: updateFundingDto.funding_source,
+      funding_description: updateFundingDto.funding_description,
+      currency: updateFundingDto.currency,
+    };
+
+    const updateFunding = await this.prisma.funding.update({
+      where: { id: id },
+      data: updatedData,
+    });
+
+    return updateFunding;
+  }
+

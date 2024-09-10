@@ -12,6 +12,7 @@ export class FundingService {
     project_id: number,
     createFundingDto: CreateFundingDto
   ): Promise<funding> {
+    
     const newFunding = await this.prisma.funding.create({
       data: {
         ...createFundingDto,
@@ -24,7 +25,7 @@ export class FundingService {
 
 // get all funding 
   async findAll(): Promise<funding[]> {
-    // return `This action returns all funding`;
+    
     return this.prisma.funding.findMany();
   }
 
@@ -47,20 +48,47 @@ export class FundingService {
   async update(id: number, updateFundingDto: UpdateFundingDto): Promise<funding> {
     const existingFunding = await this.findOne(id);
 
-    // Throw an exception error if funding with the provided id isn't found 
     if (!existingFunding) {
-      throw new NotFoundException(`Fund with the provided id ${id} not found...`)
+      throw new NotFoundException(`Fund with the provided id ${id} not found...`);
+    }
+
+    const updatedData: UpdateFundingDto = {
+      project_id: updateFundingDto.project_id,
+      amount: updateFundingDto.amount,
+      funding_source: updateFundingDto.funding_source,
+      funding_description: updateFundingDto.funding_description,
+      currency: updateFundingDto.currency,
     };
 
-    // update the funding if found
     const updateFunding = await this.prisma.funding.update({
-      where: {id: id},
-      data: updateFundingDto ,
+      where: { id: id },
+      data: updatedData,
     });
 
-    // return `This action updates a #${id} funding`;
-    return updateFunding
+    return updateFunding;
   }
+  // async update(id: number, updateFundingDto: UpdateFundingDto): Promise<funding> {
+  //   const existingFunding = await this.findOne(id);
+
+  //   // Throw an exception error if funding with the provided id isn't found 
+  //   if (!existingFunding) {
+  //     throw new NotFoundException(`Fund with the provided id ${id} not found...`)
+  //   };
+
+  //   const updatedData = {
+  //     ...updateFundingDto,
+  //     id: undefined
+  //   };
+
+  //   // update the funding if found
+  //   const updateFunding = await this.prisma.funding.update({
+  //     where: {id: id},
+  //     data: updatedData ,
+  //   });
+
+  //   // return `This action updates a #${id} funding`;
+  //   return updateFunding;
+  // }
 
   // delete a project funding
   async remove(id: number): Promise<funding> {
@@ -71,7 +99,7 @@ export class FundingService {
 
       return deletedFunding;
     } catch (error) {
-      throw new NotFoundException(`Project fund with te provide id ${id} not found...`)
+      throw new NotFoundException(`Project fund with the provide id ${id} not found...`)
     }
   }
 }

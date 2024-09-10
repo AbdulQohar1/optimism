@@ -19,7 +19,10 @@ export class FundingController {
     @Param('project_id') project_id: number,
     @Body() createFundingDto: CreateFundingDto
   ) {
-      return this.fundingService.createFunding(project_id, createFundingDto);
+    return this.fundingService.createFunding(
+      project_id, 
+      createFundingDto
+    );
   }
 
   @Get()
