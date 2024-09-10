@@ -37,8 +37,7 @@ export class ProjectContributionService {
   // }
 
   // get all contributions
-  async findAll() :Promise<project_contribution>{
-
+  async findAll() :Promise<project_contribution[]>{
     return this.prisma.project_contribution.findMany();
   }
 
@@ -52,8 +51,20 @@ export class ProjectContributionService {
     return contribution;
   }
 
-  update(id: number, updateProjectContributionDto: UpdateProjectContributionDto) {
-    return `This action updates a #${id} projectContribution`;
+  // update an existening project_contribution
+  async update(id: number, updateProjectContributionDto: UpdateProjectContributionDto) :Promise<project_contribution> {
+    const existingContribution = await this.findOne(id);
+
+    if(!existingContribution) {
+      throw new NotFoundException(`Contribution with the provided id ${id} not found...`)
+    };
+
+    const updatedContribution = await this.prisma.project_contribution.update({
+      where: {id: id},
+      data: updateProjectContributionDto,
+    });
+
+    return updatedContribution
   }
 
   // delete a project's contribution with :id
