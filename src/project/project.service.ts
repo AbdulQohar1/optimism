@@ -49,7 +49,7 @@ export class ProjectService {
       throw new NotFoundException(`Project with the provided id ${id} not found...`)
     };
 
-    // Update the project
+    //update the project
     const updatedProject = await this.prisma.project.update({
       where: {id: id},
       data: updateProjectDto,

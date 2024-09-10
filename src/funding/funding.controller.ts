@@ -19,10 +19,8 @@ export class FundingController {
     @Param('project_id') project_id: number,
     @Body() createFundingDto: CreateFundingDto
   ) {
-    // Pass both project_id and createFundingDto to the fundingService
-    return this.fundingService.createFunding(project_id, createFundingDto);
+      return this.fundingService.createFunding(project_id, createFundingDto);
   }
-
 
   @Get()
   findAll() {

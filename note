@@ -62,48 +62,26 @@ CREATE TABLE comments (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+async update(id: number, updateFundingDto: UpdateFundingDto): Promise<funding> {
+  const existingFunding = await this.findOne(id);
 
-model funding {
-  id                  Int      @id @default(autoincrement())
-  project_id          Int
-  amount              Int
-  funding_source      String?  @db.VarChar(255)
-  funding_description String?  @db.VarChar(250)
-  currency            String?  @db.VarChar(50)
-  created_at          DateTime @default(now()) @db.Timestamp(6)
-  project             project  @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
+  // Throw an exception error if funding with the provided id isn't found
+  if (!existingFunding) {
+    throw new NotFoundException(`Fund with the provided id ${id} not found...`);
+  }
 
-model project {
-  id                   Int                    @id(map: "projects_pkey") @default(autoincrement())
-  project_id           String                 @unique(map: "projects_project_id_key") @db.VarChar(255)
-  name                 String?                @db.VarChar(255)
-  description          String?
-  created_by           String                 @db.VarChar(255)
-  created_at           DateTime               @default(now()) @db.Timestamp(6)
-  total_fund           Int?                   @default(0)
-  status               String?                @db.VarChar(50)
-  project_logo_image   Bytes?
-  project_logo_name    String?                @db.VarChar(120)
-  project_banner_image Bytes?
-  website_url          String?                @db.VarChar(255)
-  projectFunding       projectFunding[]       @relation(name: "Project_has_ProjectFunding", onDelete: Cascade, onUpdate: Cascade)
-  project_contribution project_contribution[] @relation(name: "Project_has_ProjectContribution", onDelete: Cascade, onUpdate: Cascade)
-  project_impact       project_impact[]       @relation(name: "Project_has_ProjectImpact", onDelete: Cascade, onUpdate: Cascade)
-}
+  // Exclude the id property from updateFundingDto
+  const updatedData = {
+    ...updateFundingDto,
+    id: undefined, // Exclude the id property
+  };
 
-model project_contribution {
-  id                     Int     @id @default(autoincrement())
-  project_id             Int
-  contribution           String
-  dependecy_website_url  String? @db.VarChar(255)
-  dependency_description String? @db.VarChar(120)
-  project                project @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
+  // Update the funding if found
+  const updateFunding = await this.prisma.funding.update({
+    where: { id: id },
+    data: updatedData,
+  });
 
-model project_impact {
-  id                     Int     @id @default(autoincrement())
-  project_id             Int
-  description            String?
-  project                project @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  // return `This action updates a #${id} funding`;
+  return updateFunding;
 }
