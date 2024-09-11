@@ -22,19 +22,6 @@ export class ProjectContributionService {
 
     return newContribution;
   }
-  // async create(
-  //   project_id: number,
-  //   createProjectContributionDto: CreateProjectContributionDto): Promise<project_contribution> {
-
-  //     const newContribution = await this.prisma.project_contribution.create({
-  //       data: {
-  //         ...createProjectContributionDto,
-  //         project_id
-  //       },
-  //     });
-    
-  //   return newContribution;
-  // }
 
   // get all contributions
   async findAll() :Promise<project_contribution[]>{
