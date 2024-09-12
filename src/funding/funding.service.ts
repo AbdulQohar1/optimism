@@ -45,50 +45,48 @@ export class FundingService {
   }
 
   // update an existening project_funding
-  async update(id: number, updateFundingDto: UpdateFundingDto): Promise<funding> {
-    const existingFunding = await this.findOne(id);
-
-    if (!existingFunding) {
-      throw new NotFoundException(`Fund with the provided id ${id} not found...`);
-    }
-
-    const updatedData: UpdateFundingDto = {
-      project_id: updateFundingDto.project_id,
-      amount: updateFundingDto.amount,
-      funding_source: updateFundingDto.funding_source,
-      funding_description: updateFundingDto.funding_description,
-      currency: updateFundingDto.currency,
-    };
-
-    const updateFunding = await this.prisma.funding.update({
-      where: { id: id },
-      data: updatedData,
-    });
-
-    return updateFunding;
-  }
   // async update(id: number, updateFundingDto: UpdateFundingDto): Promise<funding> {
   //   const existingFunding = await this.findOne(id);
 
-  //   // Throw an exception error if funding with the provided id isn't found 
   //   if (!existingFunding) {
-  //     throw new NotFoundException(`Fund with the provided id ${id} not found...`)
+  //     throw new NotFoundException(`Fund with the provided id ${id} not found...`);
+  //   }
+
+  //   const updatedData: UpdateFundingDto = {
+  //     // id: updateFundingDto.id,
+  //     // id: existingFunding.id,
+  //     project_id: updateFundingDto.project_id,
+  //     amount: updateFundingDto.amount,
+  //     funding_source: updateFundingDto.funding_source,
+  //     funding_description: updateFundingDto.funding_description,
+  //     currency: updateFundingDto.currency,
+  //     created_at: Date,
   //   };
 
-  //   const updatedData = {
-  //     ...updateFundingDto,
-  //     id: undefined
-  //   };
-
-  //   // update the funding if found
   //   const updateFunding = await this.prisma.funding.update({
-  //     where: {id: id},
-  //     data: updatedData ,
+  //     where: { id: id },
+  //     data: updatedData,
   //   });
 
-  //   // return `This action updates a #${id} funding`;
   //   return updateFunding;
   // }
+  async update(id: number, updateFundingDto: UpdateFundingDto): Promise<funding> {
+    const existingFunding = await this.findOne(id);
+
+    // Throw an exception error if funding with the provided id isn't found 
+    if (!existingFunding) {
+      throw new NotFoundException(`Fund with the provided id ${id} not found...`)
+    };
+
+    // update the funding if found
+    const updatedFunding = await this.prisma.funding.update({
+      where: {id: id},
+      data: updateFundingDto ,
+    });
+
+    // return `This action updates a #${id} funding`;
+    return updatedFunding;
+  }
 
   // delete a project funding
   async remove(id: number): Promise<funding> {

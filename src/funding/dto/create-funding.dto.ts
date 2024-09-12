@@ -1,6 +1,8 @@
+import {} from '@nestjs/mapped-types';
+
 export class CreateFundingDto {
 	id: number;
-	project_id: string;
+	project_id: number;
 	amount: number | null;
 	funding_source: string;
 	funding_description: string;
