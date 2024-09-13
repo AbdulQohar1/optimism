@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { PrismaClient, project} from '@prisma/client';
+import { PaginationDto } from './dto/pagination.dto';
+import { PrismaClient,Prisma, project} from '@prisma/client';
+import {DEFAULT_PAGE_SIZE} from '../uto/constants'
 
 @Injectable()
 export class ProjectService {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(private readonly prisma: PrismaClient,) {}
 
   // create a new project
   async createProject(createProjectDto: CreateProjectDto): Promise <project> {
@@ -22,8 +24,11 @@ export class ProjectService {
   }
 
   // get all projects
-  async findAll(): Promise<project[]> {
-    return this.prisma.project.findMany();
+  async findAll(paginationDto: PaginationDto): Promise<project[]> {
+    return this.prisma.project.findMany({
+      skip: paginationDto.skip,
+      take: paginationDto.limit ?? DEFAULT_PAGE_SIZE
+    });
   }
 
   // find a project by  id 

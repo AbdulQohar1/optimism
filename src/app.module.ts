@@ -13,5 +13,6 @@ import { ProjectImpactModule } from './project_impact/project_impact.module';
   }), ProjectModule,  FundingModule, ProjectContributionModule, ProjectImpactModule],
   controllers: [AppController],
   providers: [AppService],
+  exports: []
 })
 export class AppModule {}

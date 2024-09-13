@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { PaginationDto } from './dto/pagination.dto';
 import { PrismaClient, project } from '@prisma/client';
 
 @Injectable()
@@ -21,8 +22,8 @@ export class ProjectController {
   }
   
   @Get()
-  findAll() {
-    return this.projectService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.projectService.findAll(paginationDto);
   }
 
   @Get(':id')
