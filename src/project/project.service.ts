@@ -27,7 +27,7 @@ export class ProjectService {
   async findAll(paginationDto: PaginationDto): Promise<project[]> {
     return this.prisma.project.findMany({
       skip: paginationDto.skip,
-      take: paginationDto.limit ?? DEFAULT_PAGE_SIZE
+      take: paginationDto.limit ?? DEFAULT_PAGE_SIZE,
     });
   }
 
